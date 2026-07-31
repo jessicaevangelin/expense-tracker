@@ -15,7 +15,7 @@
                 <option value="Transport">Transport</option>
                 <option value="Shopping">Shopping</option>
                 <option value="Bills">Bills</option>
-                <option value="Others">Others</option>
+                <option value="Other">Other</option>
             </select>
             <label for="date">Date</label>
             <input type="date" id="date" name="date">
@@ -25,6 +25,14 @@
         </form>
         <h2>Your Expenses</h2>
         <div id="total"></div>
+        <select id="filter-category">
+            <option value="all">All Categories</option>
+            <option value="Food">Food</option>
+            <option value="Transport">Transport</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Bills">Bills</option>
+            <option value="Other">Other</option>
+        </select>
         <div id="expense-list">No expenses yet.</div>
         <script src="script.js"></script>
     </body>
