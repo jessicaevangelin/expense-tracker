@@ -2,7 +2,6 @@ console.log("script is connected");
 let expenses=JSON.parse(localStorage.getItem("expenses")) || [];
 const heading=document.querySelector("h1");
 console.log(heading);
-heading.textContent = "Expense Tracker (JS is working!)";
 const form=document.querySelector("form");
 const expenseList=document.querySelector("#expense-list");
 const filterSelect=document.querySelector("#filter-category");
@@ -32,9 +31,12 @@ function renderExpenses(){
     const filtered=selected=="all"?expenses:expenses.filter(e=>e.category===selected);
     filtered.forEach(function(expense){
         const item=document.createElement("div");
-        item.textContent=expense.date+" | "+expense.category+" | ₹"+expense.amount+" | "+expense.note;
+        const dateParts=expense.date.split("-");
+        const formattedDate=dateParts[2]+"-"+dateParts[1]+"-"+dateParts[0];
+        item.textContent=formattedDate+" | "+expense.category+" | ₹"+expense.amount+" | "+expense.note;
         const deleteBtn=document.createElement("button");
         deleteBtn.textContent="Delete";
+        deleteBtn.classList.add("delete-btn");
         deleteBtn.addEventListener("click",function(){
             expenses.splice(expenses.indexOf(expense),1);
             localStorage.setItem("expenses",JSON.stringify(expenses));
