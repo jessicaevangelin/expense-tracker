@@ -34,6 +34,24 @@
             <option value="Other">Other</option>
         </select>
         <div id="expense-list">No expenses yet.</div>
+        <script type="module">
+            import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+            import {getFirestore} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+            import {collection,addDoc} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+            const firebaseConfig={
+                apiKey: "AIzaSyBcPQvRVCtv3kLMVZWssTF3pxgCmhRji_c",
+                authDomain: "expense-tracker-e604d.firebaseapp.com",
+                projectId: "expense-tracker-e604d",
+                storageBucket: "expense-tracker-e604d.firebasestorage.app",
+                messagingSenderId: "383988167805",
+                appId: "1:383988167805:web:0e502234fd9d3b2a772d14"
+            };
+            const app=initializeApp(firebaseConfig);
+            const db=getFirestore(app);
+            window.db=db;
+            const expensesRef=collection(db,"expenses");
+            window.expensesRef=expensesRef;
+        </script>
         <script src="script.js"></script>
     </body>
 </html>
