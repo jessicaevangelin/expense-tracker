@@ -37,7 +37,7 @@
         <script type="module">
             import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
             import {getFirestore} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-            import {collection,addDoc} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+            import {collection, addDoc, onSnapshot} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
             const firebaseConfig={
                 apiKey: "AIzaSyBcPQvRVCtv3kLMVZWssTF3pxgCmhRji_c",
                 authDomain: "expense-tracker-e604d.firebaseapp.com",
@@ -52,7 +52,8 @@
             const expensesRef=collection(db,"expenses");
             window.expensesRef=expensesRef;
             window.addDoc=addDoc;
+            window.onSnapshot=onSnapshot;
         </script>
-        <script src="script.js"></script>
+        <script src="script.js" defer></script>
     </body>
 </html>

@@ -1,5 +1,5 @@
 console.log("script is connected");
-let expenses=JSON.parse(localStorage.getItem("expenses")) || [];
+let expenses=[];
 const heading=document.querySelector("h1");
 console.log(heading);
 const form=document.querySelector("form");
@@ -13,6 +13,15 @@ async function addExpenseToFirestore(expense){
     }catch (error){
         console.error("Error adding expense:",error);
     }
+}
+function listenForExpenses(){
+    window.onSnapshot(window.expensesRef,function(snapshot){
+        expenses=[];
+        snapshot.forEach(function(doc){
+            expenses.push({id:doc,...doc.data()});
+        });
+        renderExpenses();
+    });
 }
 form.addEventListener("submit",function(event){
     event.preventDefault();
@@ -56,4 +65,4 @@ function renderExpenses(){
         expenseList.appendChild(item);
     })
 }
-renderExpenses();
+listenForExpenses();
