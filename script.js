@@ -6,6 +6,14 @@ const form=document.querySelector("form");
 const expenseList=document.querySelector("#expense-list");
 const filterSelect=document.querySelector("#filter-category");
 filterSelect.addEventListener("change",renderExpenses);
+async function addExpenseToFirestore(expense){
+    try{
+        await addDoc(window.expensesRef,expense);
+        console.log("Expense saved to Firestore!");
+    }catch (error){
+        console.error("Error adding expense:",error);
+    }
+}
 form.addEventListener("submit",function(event){
     event.preventDefault();
     console.log("form submitted!");
@@ -14,8 +22,10 @@ form.addEventListener("submit",function(event){
     const date=document.querySelector('input[type="date"]').value;
     const note=document.querySelector('input[type="text"]').value;
     console.log(amount);
-    expenses.push({amount:amount, category:category, date:date, note:note});
-    localStorage.setItem("expenses",JSON.stringify(expenses));
+    const expense={amount:amount, category:category, date:date, note:note}
+    expenses.push(expense);
+    //localStorage.setItem("expenses",JSON.stringify(expenses));
+    addExpenseToFirestore(expense);
     console.log(expenses);
     renderExpenses();
     form.reset();
