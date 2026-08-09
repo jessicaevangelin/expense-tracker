@@ -14,11 +14,20 @@ async function addExpenseToFirestore(expense){
         console.error("Error adding expense:",error);
     }
 }
+async function deleteExpenseFromFirestore(id) {
+    try{
+        await window.deleteDoc(window.doc(window.db,"expenses",id));
+        console.log("Expense deleted!")
+    }
+    catch (error){
+        console.error("Error deleting expense",error);
+    }
+}
 function listenForExpenses(){
     window.onSnapshot(window.expensesRef,function(snapshot){
         expenses=[];
-        snapshot.forEach(function(doc){
-            expenses.push({id:doc,...doc.data()});
+        snapshot.forEach(function(docSnap){
+            expenses.push({id:docSnap.id,...docSnap.data()});
         });
         renderExpenses();
     });
@@ -57,9 +66,7 @@ function renderExpenses(){
         deleteBtn.textContent="Delete";
         deleteBtn.classList.add("delete-btn");
         deleteBtn.addEventListener("click",function(){
-            expenses.splice(expenses.indexOf(expense),1);
-            localStorage.setItem("expenses",JSON.stringify(expenses));
-            renderExpenses();
+            deleteExpenseFromFirestore(expense.id);
         });
         item.appendChild(deleteBtn);
         expenseList.appendChild(item);
