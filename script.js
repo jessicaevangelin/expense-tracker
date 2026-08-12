@@ -6,9 +6,19 @@ const form=document.querySelector("form");
 const expenseList=document.querySelector("#expense-list");
 const filterSelect=document.querySelector("#filter-category");
 filterSelect.addEventListener("change",renderExpenses);
+window.signInAnonymously(window.auth).catch(function(error){
+    console.error("Auth error:",error);
+});
+window.onAuthStateChanged(window.auth,function(user){
+    if (user){
+        window.currentUserId=user.uid;
+        console.log("Signed in as: ",window.currentUserId);
+        listenForExpenses();
+    }
+});
 async function addExpenseToFirestore(expense){
     try{
-        await addDoc(window.expensesRef,expense);
+        await addDoc(window.expensesRef,{...expense,userId:window.currentUserId});
         console.log("Expense saved to Firestore!");
     }catch (error){
         console.error("Error adding expense:",error);
@@ -24,7 +34,8 @@ async function deleteExpenseFromFirestore(id) {
     }
 }
 function listenForExpenses(){
-    window.onSnapshot(window.expensesRef,function(snapshot){
+    const q=window.query(window.expensesRef,window.where("userId","==",window.currentUserId));
+    window.onSnapshot(q,function(snapshot){
         expenses=[];
         snapshot.forEach(function(docSnap){
             expenses.push({id:docSnap.id,...docSnap.data()});
@@ -72,4 +83,3 @@ function renderExpenses(){
         expenseList.appendChild(item);
     })
 }
-listenForExpenses();
